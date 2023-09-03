@@ -13,10 +13,7 @@ public static class ApplicationServicesExtensions
         // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
         services.AddEndpointsApiExplorer();
         services.AddSwaggerGen();
-        services.AddDbContext<StoreContext>(opt =>
-        {
-            opt.UseSqlite(config.GetConnectionString("DefaultConnection"));
-        });
+        services.AddDbContext<StoreContext>(opt => { opt.UseSqlite(config.GetConnectionString("DefaultConnection")); });
         services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
         services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
         services.Configure<ApiBehaviorOptions>(options =>
@@ -35,6 +32,14 @@ public static class ApplicationServicesExtensions
 
                 return new BadRequestObjectResult(errorResponse);
             };
+        });
+
+        services.AddCors(opt =>
+        {
+            opt.AddPolicy("CorsPolicy", policy =>
+            {
+                policy.AllowAnyHeader().AllowAnyMethod().WithOrigins("https://localhost:4200");
+            });
         });
 
         return services;

@@ -11,4 +11,3 @@ public class Product : BaseEntity
     public ProductBrand ProductBrand { get; set; }
     public int ProductBrandId { get; set; }
 }
-
